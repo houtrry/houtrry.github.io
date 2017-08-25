@@ -16,11 +16,13 @@
     <title>白日梦想家 | 未觉池塘春草梦, 阶前悟叶已秋声.</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
+    <meta name="theme-color" content="#00BCD4">
+    
     
     <meta name="keywords" content="">
     <meta property="og:type" content="website">
 <meta property="og:title" content="白日梦想家">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="https://github.com/houtrry/index.html">
 <meta property="og:site_name" content="白日梦想家">
 <meta property="og:locale" content="zh-CN">
 <meta name="twitter:card" content="summary">
@@ -28,8 +30,8 @@
     
         <link rel="alternate" type="application/atom+xml" title="白日梦想家" href="/atom.xml">
     
-    <link rel="shortcut icon" href="/">
-    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <link rel="shortcut icon" href="/img/avatar.jpg">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
     <script>window.lazyScripts=[]</script>
 
     <!-- custom head -->
@@ -45,19 +47,54 @@
     <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
         <i class="icon icon-lg icon-close"></i>
     </a>
-    <div class="brand-wrap" style="background-image:url(/)">
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
       <div class="brand">
         <a href="/" class="avatar waves-effect waves-circle waves-light">
-          <img src="/">
+          <img src="/img/avatar.jpg">
         </a>
         <hgroup class="introduce">
           <h5 class="nickname">houtrry</h5>
-          <a href="mailto:undefined" class="mail">
+          <a href="mailto:houtrry@hotmail.com" title="houtrry@hotmail.com" class="mail">houtrry@hotmail.com</a>
         </hgroup>
       </div>
     </div>
     <div class="scroll-wrap flex-col">
       <ul class="nav">
+        
+            <li class="waves-block waves-effect active">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/houtrry" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
         
       </ul>
     </div>
@@ -72,6 +109,20 @@
         </a>
         <div class="flex-col header-title ellipsis">白日梦想家</div>
         
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
         
     </div>
 </header>
@@ -124,7 +175,7 @@
     <div class="post-content" id="post-content" itemprop="postContent">
 
     
-        ###首先, 贴上IntentService的源码12...
+        源码IntentService的源码123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869public abstract class IntentService extends Servic...
     
 
         <a href="/2017/08/25/IntentService源码分析/" class="post-more waves-effect waves-button">
@@ -171,8 +222,9 @@
     <div class="post-content" id="post-content" itemprop="postContent">
 
     
-        ##Dagger2的使用  
-###引入dagger2...
+        引入dagger2参考dagger2的GitHub说明.1234dependencies &#123;  compile &apos;com.google.dagger:dagger:2.x&apos;  annotationProcessor &apos;com.google.dagger:dagger-compiler:2.x&apos;&#125;
+
+###几个常用的注解 @Modul...
     
 
         <a href="/2017/08/25/dagger2的使用小结/" class="post-more waves-effect waves-button">
@@ -217,7 +269,8 @@
     <div class="post-content" id="post-content" itemprop="postContent">
 
     
-        Welcome to Hexo! This is yo...
+        Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
+Qu...
     
 
         <a href="/2017/08/25/hello-world/" class="post-more waves-effect waves-button">
@@ -238,6 +291,15 @@
         <footer class="footer">
     <div class="top">
         
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
 
         <p>
             
@@ -247,7 +309,7 @@
         </p>
     </div>
     <div class="bottom">
-        <p><span>houtrry &copy; 2017</span>
+        <p><span>houtrry &copy; 2015 - 2017</span>
             <span>
                 
                 Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
@@ -261,21 +323,106 @@
 <a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
 
 
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://github.com/houtrry/&title=白日梦想家&pic=https://github.com/houtrry/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://github.com/houtrry/&title=白日梦想家&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/houtrry/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=白日梦想家&url=https://github.com/houtrry/&via=https://github.com/houtrry" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://github.com/houtrry/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABx0lEQVR42u3ay47CMAwFUP7/p5kt0qjttZ2mIJ2sKojSAwvLj7xe8Xp/rM9Pzvckn7/uWLi4uGPu+3Qle6rrPzfZj4uLu597FDHOw1ayv/p8YcPFxf1KbjVgJUkSLi7ur3OP0Emdkp+Pi4v7DdxeoVJtcGyt1XBxcQfc+WvWFjzL+ru4uLgtbq/RmQ9IqgnQxdtxcXG3cPOAkiQc1RZq8724uLg3c5MgVR2azq9fXIQwXFzcm7m9IqR6OWPVVQ9cXNw93GoBk6c4kwHt4Qm4uLgbuVG0G49d54EPFxd3DzcPSb1xyGQQWxiy4uLiLuX2GqDV1mce/qKGKS4u7nZu0qRI9jcj6PmZuLi4W7i9Q6ulS6+BcjETxsXF3cLNi5BRC2NeMuHi4j7EjUqROMBFiUvclMHFxd3PzS9MJMEuT6HygSsuLu5T3OpVrZyen9Oc8+Di4o657+LqpUT5JYzy/4GLi3sDtxekeiGves1rFFhxcXHH3F7w6o1Gqg3Zw4YpLi7uFm4Vkac+vSFu+WtcXNxHuXkaVB3iLrh+gYuL+yj3PLStbXng4uI+xa1enpinRHnhhIuLu59bDSWT5+THLxj64uLi9rl/s3jDQoKE/aMAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
     <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
 <script>
-var BLOG = { ROOT: '/', SHARE: , REWARD: false };
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
 
 
 </script>
 
-<script src="/js/main.min.js?v=1.6.13"></script>
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
 
 
 
 
 
 
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '迷路了吗?';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
 
 
 

@@ -16,25 +16,27 @@
     <title>IntentService源码分析 | 白日梦想家 | 未觉池塘春草梦, 阶前悟叶已秋声.</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
+    <meta name="theme-color" content="#00BCD4">
+    
     
     <meta name="keywords" content="源码分析,IntentService,HandlerThread">
-    <meta name="description" content="###首先, 贴上IntentService的源码123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869public abstract class IntentService extends Se">
+    <meta name="description" content="源码IntentService的源码123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869public abstract class IntentService extends Service &amp;">
 <meta name="keywords" content="源码分析,IntentService,HandlerThread">
 <meta property="og:type" content="article">
 <meta property="og:title" content="IntentService源码分析">
-<meta property="og:url" content="http://yoursite.com/2017/08/25/IntentService源码分析/index.html">
+<meta property="og:url" content="https://github.com/houtrry/2017/08/25/IntentService源码分析/index.html">
 <meta property="og:site_name" content="白日梦想家">
-<meta property="og:description" content="###首先, 贴上IntentService的源码123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869public abstract class IntentService extends Se">
+<meta property="og:description" content="源码IntentService的源码123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869public abstract class IntentService extends Service &amp;">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-08-25T09:08:15.669Z">
+<meta property="og:updated_time" content="2017-08-25T09:41:59.265Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="IntentService源码分析">
-<meta name="twitter:description" content="###首先, 贴上IntentService的源码123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869public abstract class IntentService extends Se">
+<meta name="twitter:description" content="源码IntentService的源码123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869public abstract class IntentService extends Service &amp;">
     
         <link rel="alternate" type="application/atom+xml" title="白日梦想家" href="/atom.xml">
     
-    <link rel="shortcut icon" href="/">
-    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <link rel="shortcut icon" href="/img/avatar.jpg">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
     <script>window.lazyScripts=[]</script>
 
     <!-- custom head -->
@@ -45,24 +47,59 @@
 <body>
     <div id="loading" class="active"></div>
 
-    <aside id="menu"  >
+    <aside id="menu" class="hide" >
   <div class="inner flex-row-vertical">
     <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
         <i class="icon icon-lg icon-close"></i>
     </a>
-    <div class="brand-wrap" style="background-image:url(/)">
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
       <div class="brand">
         <a href="/" class="avatar waves-effect waves-circle waves-light">
-          <img src="/">
+          <img src="/img/avatar.jpg">
         </a>
         <hgroup class="introduce">
           <h5 class="nickname">houtrry</h5>
-          <a href="mailto:undefined" class="mail">
+          <a href="mailto:houtrry@hotmail.com" title="houtrry@hotmail.com" class="mail">houtrry@hotmail.com</a>
         </hgroup>
       </div>
     </div>
     <div class="scroll-wrap flex-col">
       <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/houtrry" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
         
       </ul>
     </div>
@@ -77,6 +114,20 @@
         </a>
         <div class="flex-col header-title ellipsis">IntentService源码分析</div>
         
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
         
     </div>
 </header>
@@ -105,6 +156,13 @@
 
 <div class="container body-wrap">
     
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#源码"><span class="post-toc-number">1.</span> <span class="post-toc-text">源码</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#IntentService的源码"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">IntentService的源码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#HandlerThread源码"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">HandlerThread源码</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#分析"><span class="post-toc-number">2.</span> <span class="post-toc-text">分析</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#IntentService-onCreate"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">IntentService#onCreate</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#HandlerThread-run"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">HandlerThread#run</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#ServiceHandler-handleMessage"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">ServiceHandler#handleMessage</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#那什么时候执行handleMessage方法中的内容呢"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">那什么时候执行handleMessage方法中的内容呢?</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总结"><span class="post-toc-number">3.</span> <span class="post-toc-text">总结</span></a></li></ol>
+        </nav>
+    </aside>
+    
 <article id="post-IntentService源码分析"
   class="post-article article-type-post fade" itemprop="blogPost">
 
@@ -119,21 +177,25 @@
 
 
             
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <p>###首先, 贴上IntentService的源码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div></pre></td><td class="code"><pre><div class="line">public abstract class IntentService extends Service &#123;</div><div class="line">    private volatile Looper mServiceLooper;</div><div class="line">    private volatile ServiceHandler mServiceHandler;</div><div class="line">    private String mName;</div><div class="line">    private boolean mRedelivery;</div><div class="line"></div><div class="line">    private final class ServiceHandler extends Handler &#123;</div><div class="line">        public ServiceHandler(Looper looper) &#123;</div><div class="line">            super(looper);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        @Override</div><div class="line">        public void handleMessage(Message msg) &#123;</div><div class="line">            onHandleIntent((Intent)msg.obj);</div><div class="line">            stopSelf(msg.arg1);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public IntentService(String name) &#123;</div><div class="line">        super();</div><div class="line">        mName = name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void setIntentRedelivery(boolean enabled) &#123;</div><div class="line">        mRedelivery = enabled;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onCreate() &#123;</div><div class="line">        // TODO: It would be nice to have an option to hold a partial wakelock</div><div class="line">        // during processing, and to have a static startService(Context, Intent)</div><div class="line">        // method that would launch the service &amp; hand off a wakelock.</div><div class="line"></div><div class="line">        super.onCreate();</div><div class="line">        HandlerThread thread = new HandlerThread(&quot;IntentService[&quot; + mName + &quot;]&quot;);</div><div class="line">        thread.start();</div><div class="line"></div><div class="line">        mServiceLooper = thread.getLooper();</div><div class="line">        mServiceHandler = new ServiceHandler(mServiceLooper);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onStart(@Nullable Intent intent, int startId) &#123;</div><div class="line">        Message msg = mServiceHandler.obtainMessage();</div><div class="line">        msg.arg1 = startId;</div><div class="line">        msg.obj = intent;</div><div class="line">        mServiceHandler.sendMessage(msg);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public int onStartCommand(@Nullable Intent intent, int flags, int startId) &#123;</div><div class="line">        onStart(intent, startId);</div><div class="line">        return mRedelivery ? START_REDELIVER_INTENT : START_NOT_STICKY;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onDestroy() &#123;</div><div class="line">        mServiceLooper.quit();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    @Nullable</div><div class="line">    public IBinder onBind(Intent intent) &#123;</div><div class="line">        return null;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @WorkerThread</div><div class="line">    protected abstract void onHandleIntent(@Nullable Intent intent);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>其中, 有一个关键类HandlerThread<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div></pre></td><td class="code"><pre><div class="line">public class HandlerThread extends Thread &#123;</div><div class="line">    int mPriority;</div><div class="line">    int mTid = -1;</div><div class="line">    Looper mLooper;</div><div class="line"></div><div class="line">    public HandlerThread(String name) &#123;</div><div class="line">        super(name);</div><div class="line">        mPriority = Process.THREAD_PRIORITY_DEFAULT;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    public HandlerThread(String name, int priority) &#123;</div><div class="line">        super(name);</div><div class="line">        mPriority = priority;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    protected void onLooperPrepared() &#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line">        mTid = Process.myTid();</div><div class="line">        Looper.prepare();</div><div class="line">        synchronized (this) &#123;</div><div class="line">            mLooper = Looper.myLooper();</div><div class="line">            notifyAll();</div><div class="line">        &#125;</div><div class="line">        Process.setThreadPriority(mPriority);</div><div class="line">        onLooperPrepared();</div><div class="line">        Looper.loop();</div><div class="line">        mTid = -1;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public Looper getLooper() &#123;</div><div class="line">        if (!isAlive()) &#123;</div><div class="line">            return null;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        // If the thread has been started, wait until the looper has been created.</div><div class="line">        synchronized (this) &#123;</div><div class="line">            while (isAlive() &amp;&amp; mLooper == null) &#123;</div><div class="line">                try &#123;</div><div class="line">                    wait();</div><div class="line">                &#125; catch (InterruptedException e) &#123;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        return mLooper;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public boolean quit() &#123;</div><div class="line">        Looper looper = getLooper();</div><div class="line">        if (looper != null) &#123;</div><div class="line">            looper.quit();</div><div class="line">            return true;</div><div class="line">        &#125;</div><div class="line">        return false;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public boolean quitSafely() &#123;</div><div class="line">        Looper looper = getLooper();</div><div class="line">        if (looper != null) &#123;</div><div class="line">            looper.quitSafely();</div><div class="line">            return true;</div><div class="line">        &#125;</div><div class="line">        return false;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public int getThreadId() &#123;</div><div class="line">        return mTid;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>###分析<br>1.IntentService.onCreate<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">HandlerThread thread = new HandlerThread(&quot;IntentService[&quot; + mName + &quot;]&quot;);</div><div class="line">thread.start();</div></pre></td></tr></table></figure></p>
+            <h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><h3 id="IntentService的源码"><a href="#IntentService的源码" class="headerlink" title="IntentService的源码"></a>IntentService的源码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div></pre></td><td class="code"><pre><div class="line">public abstract class IntentService extends Service &#123;</div><div class="line">    private volatile Looper mServiceLooper;</div><div class="line">    private volatile ServiceHandler mServiceHandler;</div><div class="line">    private String mName;</div><div class="line">    private boolean mRedelivery;</div><div class="line"></div><div class="line">    private final class ServiceHandler extends Handler &#123;</div><div class="line">        public ServiceHandler(Looper looper) &#123;</div><div class="line">            super(looper);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        @Override</div><div class="line">        public void handleMessage(Message msg) &#123;</div><div class="line">            onHandleIntent((Intent)msg.obj);</div><div class="line">            stopSelf(msg.arg1);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public IntentService(String name) &#123;</div><div class="line">        super();</div><div class="line">        mName = name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void setIntentRedelivery(boolean enabled) &#123;</div><div class="line">        mRedelivery = enabled;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onCreate() &#123;</div><div class="line">        // TODO: It would be nice to have an option to hold a partial wakelock</div><div class="line">        // during processing, and to have a static startService(Context, Intent)</div><div class="line">        // method that would launch the service &amp; hand off a wakelock.</div><div class="line"></div><div class="line">        super.onCreate();</div><div class="line">        HandlerThread thread = new HandlerThread(&quot;IntentService[&quot; + mName + &quot;]&quot;);</div><div class="line">        thread.start();</div><div class="line"></div><div class="line">        mServiceLooper = thread.getLooper();</div><div class="line">        mServiceHandler = new ServiceHandler(mServiceLooper);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onStart(@Nullable Intent intent, int startId) &#123;</div><div class="line">        Message msg = mServiceHandler.obtainMessage();</div><div class="line">        msg.arg1 = startId;</div><div class="line">        msg.obj = intent;</div><div class="line">        mServiceHandler.sendMessage(msg);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public int onStartCommand(@Nullable Intent intent, int flags, int startId) &#123;</div><div class="line">        onStart(intent, startId);</div><div class="line">        return mRedelivery ? START_REDELIVER_INTENT : START_NOT_STICKY;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onDestroy() &#123;</div><div class="line">        mServiceLooper.quit();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    @Nullable</div><div class="line">    public IBinder onBind(Intent intent) &#123;</div><div class="line">        return null;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @WorkerThread</div><div class="line">    protected abstract void onHandleIntent(@Nullable Intent intent);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="HandlerThread源码"><a href="#HandlerThread源码" class="headerlink" title="HandlerThread源码"></a>HandlerThread源码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div></pre></td><td class="code"><pre><div class="line">public class HandlerThread extends Thread &#123;</div><div class="line">    int mPriority;</div><div class="line">    int mTid = -1;</div><div class="line">    Looper mLooper;</div><div class="line"></div><div class="line">    public HandlerThread(String name) &#123;</div><div class="line">        super(name);</div><div class="line">        mPriority = Process.THREAD_PRIORITY_DEFAULT;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    public HandlerThread(String name, int priority) &#123;</div><div class="line">        super(name);</div><div class="line">        mPriority = priority;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    protected void onLooperPrepared() &#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line">        mTid = Process.myTid();</div><div class="line">        Looper.prepare();</div><div class="line">        synchronized (this) &#123;</div><div class="line">            mLooper = Looper.myLooper();</div><div class="line">            notifyAll();</div><div class="line">        &#125;</div><div class="line">        Process.setThreadPriority(mPriority);</div><div class="line">        onLooperPrepared();</div><div class="line">        Looper.loop();</div><div class="line">        mTid = -1;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public Looper getLooper() &#123;</div><div class="line">        if (!isAlive()) &#123;</div><div class="line">            return null;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        // If the thread has been started, wait until the looper has been created.</div><div class="line">        synchronized (this) &#123;</div><div class="line">            while (isAlive() &amp;&amp; mLooper == null) &#123;</div><div class="line">                try &#123;</div><div class="line">                    wait();</div><div class="line">                &#125; catch (InterruptedException e) &#123;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        return mLooper;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public boolean quit() &#123;</div><div class="line">        Looper looper = getLooper();</div><div class="line">        if (looper != null) &#123;</div><div class="line">            looper.quit();</div><div class="line">            return true;</div><div class="line">        &#125;</div><div class="line">        return false;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public boolean quitSafely() &#123;</div><div class="line">        Looper looper = getLooper();</div><div class="line">        if (looper != null) &#123;</div><div class="line">            looper.quitSafely();</div><div class="line">            return true;</div><div class="line">        &#125;</div><div class="line">        return false;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public int getThreadId() &#123;</div><div class="line">        return mTid;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><h3 id="IntentService-onCreate"><a href="#IntentService-onCreate" class="headerlink" title="IntentService#onCreate"></a>IntentService#onCreate</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">HandlerThread thread = new HandlerThread(&quot;IntentService[&quot; + mName + &quot;]&quot;);</div><div class="line">thread.start();</div></pre></td></tr></table></figure>
 <p>方法中创建了HandlerThread, 而HandlerThread继承自Thread, 即IntentService.onCreate方法中创建了一个子线程, 并开启了子线程.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mServiceLooper = thread.getLooper();</div><div class="line">mServiceHandler = new ServiceHandler(mServiceLooper);</div></pre></td></tr></table></figure></p>
 <p>将子线程的Looper交给内部类ServiceHandler, 而ServiceHandler继承自Handler.<br>于是, 先来查看下HandlerThread到底做了什么.</p>
-<p>2.HandlerThread继承自Thread, 那先看下run方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">public void run() &#123;</div><div class="line">    mTid = Process.myTid();</div><div class="line">    Looper.prepare();</div><div class="line">    synchronized (this) &#123;</div><div class="line">        mLooper = Looper.myLooper();</div><div class="line">        notifyAll();</div><div class="line">    &#125;</div><div class="line">    Process.setThreadPriority(mPriority);</div><div class="line">    onLooperPrepared();</div><div class="line">    Looper.loop();</div><div class="line">    mTid = -1;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="HandlerThread-run"><a href="#HandlerThread-run" class="headerlink" title="HandlerThread#run"></a>HandlerThread#run</h3><p>HandlerThread继承自Thread, 那先看下run方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">public void run() &#123;</div><div class="line">    mTid = Process.myTid();</div><div class="line">    Looper.prepare();</div><div class="line">    synchronized (this) &#123;</div><div class="line">        mLooper = Looper.myLooper();</div><div class="line">        notifyAll();</div><div class="line">    &#125;</div><div class="line">    Process.setThreadPriority(mPriority);</div><div class="line">    onLooperPrepared();</div><div class="line">    Looper.loop();</div><div class="line">    mTid = -1;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>在run方法中, 我们看到了Looper.prepare()方法, 了解Handler的都知道, 在子线程中创建Handler, 需要先调用Looper.prepare()方法在子线程中创建looper.那这里run方法就清晰了, run方法创建了looper并且调用了Looper.loop()方法轮询Looper中的消息队列.  </p>
-<p>3.知道了ServiceHandler的looper来自于HandlerThread中创建的looper后, 我们可以知道, ServiceHandler.handleMessage将会执行在线程ServiceHandler中.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">public void handleMessage(Message msg) &#123;</div><div class="line">    onHandleIntent((Intent)msg.obj);</div><div class="line">    stopSelf(msg.arg1);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="ServiceHandler-handleMessage"><a href="#ServiceHandler-handleMessage" class="headerlink" title="ServiceHandler#handleMessage"></a>ServiceHandler#handleMessage</h3><p>知道了ServiceHandler的looper来自于HandlerThread中创建的looper后, 我们可以知道, ServiceHandler#handleMessage将会执行在线程ServiceHandler中.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">public void handleMessage(Message msg) &#123;</div><div class="line">    onHandleIntent((Intent)msg.obj);</div><div class="line">    stopSelf(msg.arg1);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>handleMessage中有onHandleIntent((Intent)msg.obj);和stopSelf(msg.arg1);<br>onHandleIntent((Intent)msg.obj)方法就是我们要具体实现的方法, 我们实现这个方法, 将需要在子线程中完成的事情放到这里.<br>stopSelf(msg.arg1)方法就是停止service.  </p>
-<p>4.那什么时候执行handleMessage方法中的内容呢?<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">public void onStart(@Nullable Intent intent, int startId) &#123;</div><div class="line">    Message msg = mServiceHandler.obtainMessage();</div><div class="line">    msg.arg1 = startId;</div><div class="line">    msg.obj = intent;</div><div class="line">    mServiceHandler.sendMessage(msg);</div><div class="line">&#125;</div><div class="line"></div><div class="line">@Override</div><div class="line">public int onStartCommand(@Nullable Intent intent, int flags, int startId) &#123;</div><div class="line">    onStart(intent, startId);</div><div class="line">    return mRedelivery ? START_REDELIVER_INTENT : START_NOT_STICKY;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="那什么时候执行handleMessage方法中的内容呢"><a href="#那什么时候执行handleMessage方法中的内容呢" class="headerlink" title="那什么时候执行handleMessage方法中的内容呢?"></a>那什么时候执行handleMessage方法中的内容呢?</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">public void onStart(@Nullable Intent intent, int startId) &#123;</div><div class="line">    Message msg = mServiceHandler.obtainMessage();</div><div class="line">    msg.arg1 = startId;</div><div class="line">    msg.obj = intent;</div><div class="line">    mServiceHandler.sendMessage(msg);</div><div class="line">&#125;</div><div class="line"></div><div class="line">@Override</div><div class="line">public int onStartCommand(@Nullable Intent intent, int flags, int startId) &#123;</div><div class="line">    onStart(intent, startId);</div><div class="line">    return mRedelivery ? START_REDELIVER_INTENT : START_NOT_STICKY;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>  在IntentService#onStart方法中, mServiceHandler发出消息, 开始在子线程HandlerThread中执行onHandleIntent((Intent)msg.obj)和stopSelf(msg.arg1)  </p>
-<p>###总结<br>1.在IntentService#onCreate方法中<br>   ①创建子线程, 并在子线程中创建looper, 调用Looper.loop()方法轮询消息.<br>   ②用子线程中创建的Looper创建Handler.  </p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>1.在IntentService#onCreate方法中<br>   ①创建子线程, 并在子线程中创建looper, 调用Looper.loop()方法轮询消息.<br>   ②用子线程中创建的Looper创建Handler.  </p>
 <p>2.在IntentService#onStart方法中, 通过mServiceHandler发送Message, 触发在子线程(HandlerThread所在线程)中执行IntentService#onHandleIntent方法和IntentService#stopSelf来执行任务, 并在任务结束的时候停止Service.  </p>
 <p>3.IntentService#onDestroy方法中, 执行mServiceLooper.quit();即, 停止loop的轮询.轮询停止后, 子线程HandlerThread也就结束了.</p>
 
@@ -142,12 +204,16 @@
         <blockquote class="post-copyright">
     <div class="content">
         
+<span class="post-time">
+    最后更新时间：<time datetime="2017-08-25T09:41:59.265Z" itemprop="dateUpdated">2017-08-25 17:41:59</time>
+</span><br>
+
 
         
     </div>
     <footer>
-        <a href="http://yoursite.com">
-            <img src="/" alt="houtrry">
+        <a href="https://github.com/houtrry">
+            <img src="/img/avatar.jpg" alt="houtrry">
             houtrry
         </a>
     </footer>
@@ -162,6 +228,51 @@
 
 
             
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://github.com/houtrry/2017/08/25/IntentService源码分析/&title=《IntentService源码分析》 — 白日梦想家&pic=https://github.com/houtrry/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://github.com/houtrry/2017/08/25/IntentService源码分析/&title=《IntentService源码分析》 — 白日梦想家&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/houtrry/2017/08/25/IntentService源码分析/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《IntentService源码分析》 — 白日梦想家&url=https://github.com/houtrry/2017/08/25/IntentService源码分析/&via=https://github.com/houtrry" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://github.com/houtrry/2017/08/25/IntentService源码分析/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
 
 
         </div>
@@ -207,6 +318,15 @@
         <footer class="footer">
     <div class="top">
         
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
 
         <p>
             
@@ -216,7 +336,7 @@
         </p>
     </div>
     <div class="bottom">
-        <p><span>houtrry &copy; 2017</span>
+        <p><span>houtrry &copy; 2015 - 2017</span>
             <span>
                 
                 Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
@@ -230,21 +350,106 @@
 <a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
 
 
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://github.com/houtrry/2017/08/25/IntentService源码分析/&title=《IntentService源码分析》 — 白日梦想家&pic=https://github.com/houtrry/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://github.com/houtrry/2017/08/25/IntentService源码分析/&title=《IntentService源码分析》 — 白日梦想家&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/houtrry/2017/08/25/IntentService源码分析/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《IntentService源码分析》 — 白日梦想家&url=https://github.com/houtrry/2017/08/25/IntentService源码分析/&via=https://github.com/houtrry" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://github.com/houtrry/2017/08/25/IntentService源码分析/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACtUlEQVR42u3aQY4iMRAEQP7/6dnrSgjIrLJnOIRPCDWNow92dZYfj3j8/DfeX/P8+fkOz1e+Gvm/rwYeHh7eYuqbP3hPevUIXt0z/+2rOePh4eHd5uULfXTTt1PcgPM54+Hh4X0br6XmZXe7SeDh4eF9Py+BtcV3skng4eHhfRsvn24eyLYx7uybY1kLHh4eXszLu0jf8/lKfw8PDw9v3VVvm/2zWCE/rFDPFg8PD+8CL19wNwXr7GHNymU8PDy827zZa3/e8n//TR4TDw8W4OHh4V3g5ct30mqaHRqYleb1doWHh4d3iJdEBvvg9exhrCIWwcPDw7vAaxf9NpzNl/W8XD7Q68PDw8M7ytu8/OdRxT7SbTcePDw8vBu8PFRN/ixnt0HG8Bo8PDy8Q7w8Jsgn3Rbcs00iiU7w8PDwbvD2b/GzkKJd+pMH8dgMPDw8vAVvvw3kk8sn3TbYPhwmwMPDw1vw2nZ+O6H8EMBmE3q5/eDh4eFd47UtqCQIaNntEYRohnh4eHjXeLPDVbMAYl9GF48PDw8P71d4myNTp4rpY1sRHh4e3jVenvXmra82npgdYigOXeHh4eEd5eWNq3b5njXJ2iTh5Xzw8PDwrvHyiKGNVvPtpy3io6gCDw8P7wIvX3BPLeVFQVyW0UWXDw8PD+8CbxZMtOXyvjSPCnc8PDy8X+fl20bbKsubbflxgQ9ZNR4eHt5RXvLHbVk82zAe5fhwBzw8PLyjvJ9y5KRNK2u2zRQNMDw8PLwFb9ba3zyCpCye/faxGXh4eHglL5nuLNJtH8p+Y8DDw8P7TV67oOcHC9o9qi2Lo40BDw8P7095s+h2D05iiwMpNR4eHt5lXlKaJ3FDe2WxeeDh4eFd480ml7fz8zvPIt3oTBkeHh7eId7mhX8f2u6bZwcGHh4eXsr7B2wMu2AISlVyAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
     <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
 <script>
-var BLOG = { ROOT: '/', SHARE: , REWARD: false };
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
 
 
 </script>
 
-<script src="/js/main.min.js?v=1.6.13"></script>
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
 
 
 
 
 
 
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '迷路了吗?';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
 
 
 
