@@ -95,13 +95,19 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="白日梦想家">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="##Dagger2的使用   ###引入dagger2参考dagger2的GitHub说明.1234dependencies &amp;#123;  compile &amp;apos;com.google.dagger:dagger:2.x&amp;apos;  annotationProcessor &amp;apos;com.google.dagger:dagger-compiler:2.x&amp;apos;&amp;#125;  ##">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dagger2的使用小结">
+<meta property="og:url" content="http://yoursite.com/2017/08/25/dagger2的使用小结/index.html">
 <meta property="og:site_name" content="白日梦想家">
+<meta property="og:description" content="##Dagger2的使用   ###引入dagger2参考dagger2的GitHub说明.1234dependencies &amp;#123;  compile &amp;apos;com.google.dagger:dagger:2.x&amp;apos;  annotationProcessor &amp;apos;com.google.dagger:dagger-compiler:2.x&amp;apos;&amp;#125;  ##">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/houtrry/blogs/master/image/001.png">
+<meta property="og:updated_time" content="2017-08-25T05:56:48.324Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="白日梦想家">
+<meta name="twitter:title" content="dagger2的使用小结">
+<meta name="twitter:description" content="##Dagger2的使用   ###引入dagger2参考dagger2的GitHub说明.1234dependencies &amp;#123;  compile &amp;apos;com.google.dagger:dagger:2.x&amp;apos;  annotationProcessor &amp;apos;com.google.dagger:dagger-compiler:2.x&amp;apos;&amp;#125;  ##">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/houtrry/blogs/master/image/001.png">
 
 
 
@@ -131,13 +137,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/08/25/dagger2的使用小结/"/>
 
 
 
 
 
-  <title>白日梦想家</title>
+  <title>dagger2的使用小结 | 白日梦想家</title>
   
 
 
@@ -156,8 +162,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -220,9 +225,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -252,9 +257,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/25/dagger2的使用小结/" itemprop="url">dagger2的使用小结</a></h1>
+          <h1 class="post-title" itemprop="name headline">dagger2的使用小结</h1>
         
 
         <div class="post-meta">
@@ -304,9 +307,7 @@
       
 
       
-        
-          
-            <p>##Dagger2的使用  </p>
+        <p>##Dagger2的使用  </p>
 <p>###引入dagger2<br>参考<a href="https://github.com/google/dagger" target="_blank" rel="external">dagger2的GitHub</a>说明.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">  compile &apos;com.google.dagger:dagger:2.x&apos;</div><div class="line">  annotationProcessor &apos;com.google.dagger:dagger-compiler:2.x&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <hr>
 <p>###几个常用的注解    </p>
@@ -329,8 +330,6 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">public void injectMembers(Main9Activity instance) &#123;</div><div class="line">  if (instance == null) &#123;</div><div class="line">    throw new NullPointerException(&quot;Cannot inject members into a null reference&quot;);</div><div class="line">  &#125;</div><div class="line">  instance.mApple = mAppleProvider.get();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>此时, 我们终于找到了这个给Main9Activity的成员变量mApple赋值的地方了, 通过inject调用Main9Activity_MembersInjector.injectMembers方法, 在injectMembers方法中, 通过单例Apple_Factory.get获取Apple的实例, 并将该实例直接赋值飞Main9Activity.mApple, 到此, 给mApple生成实例的过程就结束了.  当然, 这里分析的只是最简单的使用模式, 随着Dagger2的使用, 代码会越来越复杂.<br>在这里, 我们也可以明白, 为什么成员变量mApple不能是private或者protected的, 因为给mApple赋值的方式使用过instance.mApple来实现的, 如果mApple是private或者protected, 这里将会报错.</p>
 
-          
-        
       
     </div>
     
@@ -347,140 +346,28 @@
       
 
       
-
-      
-
       
       
-        <div class="post-eof"></div>
+
       
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/25/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="houtrry">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="白日梦想家">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/25/hello-world/" itemprop="url">Hello World</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-25T10:08:43+08:00">
-                2017-08-25
-              </time>
+              <a href="/2017/08/25/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
             
+          </div>
 
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -490,10 +377,11 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -501,6 +389,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -691,10 +583,10 @@
 
 
   
-    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
-  
+
 
   
 
