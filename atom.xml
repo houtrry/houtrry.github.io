@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-08-25T07:42:21.891Z</updated>
+  <updated>2017-08-25T09:00:34.447Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2017/08/25/IntentService%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"/>
     <id>http://yoursite.com/2017/08/25/IntentService源码分析/</id>
     <published>2017-08-25T07:41:08.000Z</published>
-    <updated>2017-08-25T07:42:21.891Z</updated>
+    <updated>2017-08-25T09:00:34.447Z</updated>
     
     <content type="html"><![CDATA[<p>###首先, 贴上IntentService的源码
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div></pre></td><td class="code"><pre><div class="line">public abstract class IntentService extends Service &#123;</div><div class="line">    private volatile Looper mServiceLooper;</div><div class="line">    private volatile ServiceHandler mServiceHandler;</div><div class="line">    private String mName;</div><div class="line">    private boolean mRedelivery;</div><div class="line"></div><div class="line">    private final class ServiceHandler extends Handler &#123;</div><div class="line">        public ServiceHandler(Looper looper) &#123;</div><div class="line">            super(looper);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        @Override</div><div class="line">        public void handleMessage(Message msg) &#123;</div><div class="line">            onHandleIntent((Intent)msg.obj);</div><div class="line">            stopSelf(msg.arg1);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public IntentService(String name) &#123;</div><div class="line">        super();</div><div class="line">        mName = name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void setIntentRedelivery(boolean enabled) &#123;</div><div class="line">        mRedelivery = enabled;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onCreate() &#123;</div><div class="line">        // TODO: It would be nice to have an option to hold a partial wakelock</div><div class="line">        // during processing, and to have a static startService(Context, Intent)</div><div class="line">        // method that would launch the service &amp; hand off a wakelock.</div><div class="line"></div><div class="line">        super.onCreate();</div><div class="line">        HandlerThread thread = new HandlerThread(&quot;IntentService[&quot; + mName + &quot;]&quot;);</div><div class="line">        thread.start();</div><div class="line"></div><div class="line">        mServiceLooper = thread.getLooper();</div><div class="line">        mServiceHandler = new ServiceHandler(mServiceLooper);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onStart(@Nullable Intent intent, int startId) &#123;</div><div class="line">        Message msg = mServiceHandler.obtainMessage();</div><div class="line">        msg.arg1 = startId;</div><div class="line">        msg.obj = intent;</div><div class="line">        mServiceHandler.sendMessage(msg);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public int onStartCommand(@Nullable Intent intent, int flags, int startId) &#123;</div><div class="line">        onStart(intent, startId);</div><div class="line">        return mRedelivery ? START_REDELIVER_INTENT : START_NOT_STICKY;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onDestroy() &#123;</div><div class="line">        mServiceLooper.quit();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    @Nullable</div><div class="line">    public IBinder onBind(Intent intent) &#123;</div><div class="line">        return null;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @WorkerThread</div><div class="line">    protected abstract void onHandleIntent(@Nullable Intent intent);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
@@ -60,7 +60,9 @@ stopSelf(msg.arg1)方法就是停止service.</p>
     </summary>
     
     
-      <category term="Android 源码分析" scheme="http://yoursite.com/tags/Android-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"/>
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+      <category term="源码分析" scheme="http://yoursite.com/tags/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"/>
     
   </entry>
   
@@ -69,7 +71,7 @@ stopSelf(msg.arg1)方法就是停止service.</p>
     <link href="http://yoursite.com/2017/08/25/dagger2%E7%9A%84%E4%BD%BF%E7%94%A8%E5%B0%8F%E7%BB%93/"/>
     <id>http://yoursite.com/2017/08/25/dagger2的使用小结/</id>
     <published>2017-08-25T05:53:50.000Z</published>
-    <updated>2017-08-25T07:36:20.332Z</updated>
+    <updated>2017-08-25T09:00:16.968Z</updated>
     
     <content type="html"><![CDATA[<p>##Dagger2的使用<br>
 ###引入dagger2<br>
@@ -146,7 +148,9 @@ Build--&gt;Make Project<br>
     </summary>
     
     
-      <category term="Android Dagger2" scheme="http://yoursite.com/tags/Android-Dagger2/"/>
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+      <category term="Dagger2" scheme="http://yoursite.com/tags/Dagger2/"/>
     
   </entry>
   
