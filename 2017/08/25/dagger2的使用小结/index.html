@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>dagger2的使用小结 | 白日梦想家 | 未觉池塘春草梦, 阶前梧叶已秋声.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#00BCD4">
+    
+    
+    <meta name="keywords" content="Dagger2">
+    <meta name="description" content="引入dagger2参考dagger2的GitHub说明.1234dependencies &amp;#123;  compile &amp;apos;com.google.dagger:dagger:2.x&amp;apos;  annotationProcessor &amp;apos;com.google.dagger:dagger-compiler:2.x&amp;apos;&amp;#125;  ###几个常用的注解 @Module,">
+<meta name="keywords" content="Dagger2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dagger2的使用小结">
+<meta property="og:url" content="https://github.com/houtrry/2017/08/25/dagger2的使用小结/index.html">
+<meta property="og:site_name" content="白日梦想家">
+<meta property="og:description" content="引入dagger2参考dagger2的GitHub说明.1234dependencies &amp;#123;  compile &amp;apos;com.google.dagger:dagger:2.x&amp;apos;  annotationProcessor &amp;apos;com.google.dagger:dagger-compiler:2.x&amp;apos;&amp;#125;  ###几个常用的注解 @Module,">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/houtrry/blogs/master/image/001.png">
+<meta property="og:updated_time" content="2017-12-26T03:30:25.372Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="dagger2的使用小结">
+<meta name="twitter:description" content="引入dagger2参考dagger2的GitHub说明.1234dependencies &amp;#123;  compile &amp;apos;com.google.dagger:dagger:2.x&amp;apos;  annotationProcessor &amp;apos;com.google.dagger:dagger-compiler:2.x&amp;apos;&amp;#125;  ###几个常用的注解 @Module,">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/houtrry/blogs/master/image/001.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="白日梦想家" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/avatar.jpg">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">houtrry</h5>
+          <a href="mailto:houtrry@hotmail.com" title="houtrry@hotmail.com" class="mail">houtrry@hotmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/houtrry" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">dagger2的使用小结</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">dagger2的使用小结</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-08-25T05:53:50.000Z" itemprop="datePublished" class="page-time">
+  2017-08-25
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Android/">Android</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#引入dagger2"><span class="post-toc-number">1.</span> <span class="post-toc-text">引入dagger2</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#生成对象的方式"><span class="post-toc-number">2.</span> <span class="post-toc-text">生成对象的方式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#方式①"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">方式①</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#方式②"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">方式②</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Dagger2原理分析"><span class="post-toc-number">3.</span> <span class="post-toc-text">Dagger2原理分析</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-dagger2的使用小结"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">dagger2的使用小结</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-08-25 13:53:50" datetime="2017-08-25T05:53:50.000Z"  itemprop="datePublished">2017-08-25</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Android/">Android</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="引入dagger2"><a href="#引入dagger2" class="headerlink" title="引入dagger2"></a>引入dagger2</h2><p>参考<a href="https://github.com/google/dagger">dagger2的GitHub</a>说明.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">  compile &apos;com.google.dagger:dagger:2.x&apos;</span><br><span class="line">  annotationProcessor &apos;com.google.dagger:dagger-compiler:2.x&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>###几个常用的注解<br> @Module, @Component, @Inject, @Provides   </p>
+<h2 id="生成对象的方式"><a href="#生成对象的方式" class="headerlink" title="生成对象的方式"></a>生成对象的方式</h2><p>生成对象有两个方式:<br>①.@Inject 注解提供方式：在所需类的构造函数中直接加上 @Inject 注解<br>②.@Module 注解提供方式：通过新建一个专门的提供这类来提供类实例，然后在类名上面添加 @Module 注解，在类中自己定义方法，手动通过 new 来进行创建，这种主要是针对第三方库中，我们无法直接在构造函数中添加 @Inject 注解的情况。  </p>
+<h3 id="方式①"><a href="#方式①" class="headerlink" title="方式①"></a>方式①</h3><p>1&gt; 用@Inject注解Bean类的构造方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class Apple &#123;</span><br><span class="line"></span><br><span class="line">    @Inject</span><br><span class="line">    public Apple() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getDescription() &#123;</span><br><span class="line">        return &quot;this is a red apple&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>2&gt;使用@Component注解自己的Component类.比如下面的AppleComponent, 该类用@Component注解, 类中提供inject方法(方法名可以随便写, 一般用inject), 方法的参数Main9Activity是需要使用注解生成Apple的类.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public interface AppleComponent &#123;</span><br><span class="line">    void inject(Main9Activity main9Activity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>3&gt;编译项目, Android Studio<br> Build–&gt;Make Project<br>或者直接点击<br><img src="https://raw.githubusercontent.com/houtrry/blogs/master/image/001.png" alt="Aaron Swartz">  </p>
+<p>4&gt;使用@Inject注解需要生成Apple的变量, 注入Main9Activity<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class Main9Activity extends AppCompatActivity &#123;</span><br><span class="line"></span><br><span class="line">    @BindView(R.id.textView9)</span><br><span class="line">    TextView mTextView9;</span><br><span class="line"></span><br><span class="line">    @Inject</span><br><span class="line">    Apple mApple;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main9);</span><br><span class="line">        ButterKnife.bind(this);</span><br><span class="line"></span><br><span class="line">        DaggerAppleComponent.builder().build().inject(this);</span><br><span class="line"></span><br><span class="line">        mTextView9.setText(mApple.getDescription());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DaggerAppleComponent.builder().build().inject(this);</span><br></pre></td></tr></table></figure>
+<p>这里, 上面第4步生成了DaggerAppleComponent, 实现了接口AppleComponent的inject方法, 此时, 注入Main9Activity, 将Main9Activity和Apple关联起来.  </p>
+<p>那么, 思考一个问题, 如果这个Apple类我们并不能修改, 也就是我们不能再Apple的构造函数上添加注解@Inject(比如第三方库里的类), 那我们怎么处理呢? 这就得用我们第二种注解方法了.  </p>
+<h3 id="方式②"><a href="#方式②" class="headerlink" title="方式②"></a>方式②</h3><p>1&gt; 生成一个普通的Bean<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public class Cloth &#123;</span><br><span class="line">    private String color;</span><br><span class="line"></span><br><span class="line">    public String getColor() &#123;</span><br><span class="line">        return color;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setColor(String color) &#123;</span><br><span class="line">        this.color = color;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String toString() &#123;</span><br><span class="line">        return color + &quot;布料&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>2&gt;构建Module<br>注解@Module表明这是一个Module类, 方法上的@Provides表明该方法生成一个返回值为Cloth类型的依赖对象<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@Module</span><br><span class="line">public class MainModule &#123;</span><br><span class="line"></span><br><span class="line">    @Provides</span><br><span class="line">    public Cloth getCloth() &#123;</span><br><span class="line">        Cloth cloth = new Cloth();</span><br><span class="line">        cloth.setColor(&quot;红色&quot;);</span><br><span class="line">        return cloth;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>3&gt;书写Component<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@Component(modules=MainModule.class)</span><br><span class="line">public interface MainComponent &#123;</span><br><span class="line">    void inject(MainActivity mainActivity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>MainComponent是一个接口, 接口上用@Component注解, 表明这是一个Component, @Component的参数model=MainModule.class, 将MainMoudle和MainComponent关联起来, MainComponent中有一个inject的方法(方法名随意, 方法参数是需要使用到注解生成对象的类, 这里是需要在MainActivity中使用注解生成Cloth)<br>4&gt;AS: Build–&gt;make Project<br>5&gt;在MainActivity中使用注解.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public class Main3Activity extends AppCompatActivity &#123;</span><br><span class="line"></span><br><span class="line">    private TextView mTextView;</span><br><span class="line"></span><br><span class="line">    @Inject</span><br><span class="line">    Cloth mCloth;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main3);</span><br><span class="line"></span><br><span class="line">        mTextView = (TextView) findViewById(R.id.textView2);</span><br><span class="line"></span><br><span class="line">        DaggerMainComponent.builder().mainModule(new MainModule()).build().inject(this);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Dagger2原理分析"><a href="#Dagger2原理分析" class="headerlink" title="Dagger2原理分析"></a>Dagger2原理分析</h2><p>1.就使用上面方式一的例子吧.注入的目的是在Main9Activity中生成Apple的实例.<br>我们从<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DaggerAppleComponent.builder().build().inject(this);</span><br></pre></td></tr></table></figure></p>
+<p>开始分析吧.<br>首先, 看下DaggerAppleComponent的源码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">public final class DaggerAppleComponent implements AppleComponent &#123;</span><br><span class="line">  private MembersInjector&lt;Main9Activity&gt; main9ActivityMembersInjector;</span><br><span class="line"></span><br><span class="line">  private DaggerAppleComponent(Builder builder) &#123;</span><br><span class="line">    assert builder != null;</span><br><span class="line">    initialize(builder);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public static Builder builder() &#123;</span><br><span class="line">    return new Builder();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public static AppleComponent create() &#123;</span><br><span class="line">    return new Builder().build();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @SuppressWarnings(&quot;unchecked&quot;)</span><br><span class="line">  private void initialize(final Builder builder) &#123;</span><br><span class="line"></span><br><span class="line">    this.main9ActivityMembersInjector =</span><br><span class="line">        Main9Activity_MembersInjector.create(Apple_Factory.create());</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @Override</span><br><span class="line">  public void inject(Main9Activity main9Activity) &#123;</span><br><span class="line">    main9ActivityMembersInjector.injectMembers(main9Activity);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public static final class Builder &#123;</span><br><span class="line">    private Builder() &#123;&#125;</span><br><span class="line"></span><br><span class="line">    public AppleComponent build() &#123;</span><br><span class="line">      return new DaggerAppleComponent(this);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>2.DaggerAppleComponent.builder(): builder()方法里new 了一个DaggerAppleComponent.Builder, 并返回这个新建的Builder.<br>3.DaggerAppleComponent.builder().build(): build()方法里new了DaggerAppleComponent的实例, 并将上个方法创建的Builder传给了DaggerAppleComponent的构造方法.<br>在DaggerAppleComponent的构造方法里, 调用了DaggerAppleComponent.initialize(builder).<br>在initialize里. 调用了Main9Activity_MembersInjector.create(Apple_Factory.create())方法.<br>4.现在我们来看一下这个Main9Activity_MembersInjector.create(Apple_Factory.create())方法都做了什么事情.<br>首先, 看下Apple_Factory的源码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public final class Apple_Factory implements Factory&lt;Apple&gt; &#123;</span><br><span class="line">  private static final Apple_Factory INSTANCE = new Apple_Factory();</span><br><span class="line"></span><br><span class="line">  @Override</span><br><span class="line">  public Apple get() &#123;</span><br><span class="line">    return new Apple();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public static Factory&lt;Apple&gt; create() &#123;</span><br><span class="line">    return INSTANCE;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>从源码可知, Apple_Factory是个单例, create方法返回了该单例. get方法返回了一个Apple实例.<br>这个时候就要注意了, 我们注解的目的是什么? 就是生成一个Apple实例啊, 那么, 现在我们知道, Apple_Factory的get方法创建了一个Apple实例. 记住这一点. 我们继续向下看Main9Activity_MembersInjector.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">public final class Main9Activity_MembersInjector implements MembersInjector&lt;Main9Activity&gt; &#123;</span><br><span class="line">  private final Provider&lt;Apple&gt; mAppleProvider;</span><br><span class="line"></span><br><span class="line">  public Main9Activity_MembersInjector(Provider&lt;Apple&gt; mAppleProvider) &#123;</span><br><span class="line">    assert mAppleProvider != null;</span><br><span class="line">    this.mAppleProvider = mAppleProvider;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public static MembersInjector&lt;Main9Activity&gt; create(Provider&lt;Apple&gt; mAppleProvider) &#123;</span><br><span class="line">    return new Main9Activity_MembersInjector(mAppleProvider);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @Override</span><br><span class="line">  public void injectMembers(Main9Activity instance) &#123;</span><br><span class="line">    if (instance == null) &#123;</span><br><span class="line">      throw new NullPointerException(&quot;Cannot inject members into a null reference&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    instance.mApple = mAppleProvider.get();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public static void injectMApple(Main9Activity instance, Provider&lt;Apple&gt; mAppleProvider) &#123;</span><br><span class="line">    instance.mApple = mAppleProvider.get();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Main9Activity_MembersInjector.create(Apple_Factory.create())方法到底做了什么呢?<br>我们已知Apple_Factory.create()返回了单例Apple_Factory并且, Apple_Factory.get方法返回了Apple的实例.<br>现在来看Main9Activity_MembersInjector.create, 在该方法中, new了一个Main9Activity_MembersInjector, 并将Apple_Factory的单例传给这个构造方法.<br>在Main9Activity_MembersInjector的构造方法中, 将Apple_Factory的实例赋值给了Main9Activity_MembersInjector的成员变量mAppleProvider, 此时, 通过成员变量mAppleProvider的get方法就可以得到一个Apple的实例了.<br>5.DaggerMainComponent.builder().mainModule(new MainModule()).build().inject(this): 最后这个inject方法做了什么呢?<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void inject(Main9Activity main9Activity) &#123;</span><br><span class="line">  main9ActivityMembersInjector.injectMembers(main9Activity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void injectMembers(Main9Activity instance) &#123;</span><br><span class="line">  if (instance == null) &#123;</span><br><span class="line">    throw new NullPointerException(&quot;Cannot inject members into a null reference&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  instance.mApple = mAppleProvider.get();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时, 我们终于找到了这个给Main9Activity的成员变量mApple赋值的地方了, 通过inject调用Main9Activity_MembersInjector.injectMembers方法, 在injectMembers方法中, 通过单例Apple_Factory.get获取Apple的实例, 并将该实例直接赋值飞Main9Activity.mApple, 到此, 给mApple生成实例的过程就结束了.  当然, 这里分析的只是最简单的使用模式, 随着Dagger2的使用, 代码会越来越复杂.<br>在这里, 我们也可以明白, 为什么成员变量mApple不能是private或者protected的, 因为给mApple赋值的方式使用过instance.mApple来实现的, 如果mApple是private或者protected, 这里将会报错.</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-12-26T03:30:25.372Z" itemprop="dateUpdated">2017-12-26 11:30:25</time>
+</span><br>
+
+
+        
+    </div>
+    <footer>
+        <a href="https://github.com/houtrry">
+            <img src="/img/avatar.jpg" alt="houtrry">
+            houtrry
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dagger2/">Dagger2</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://github.com/houtrry/2017/08/25/dagger2的使用小结/&title=《dagger2的使用小结》 — 白日梦想家&pic=https://github.com/houtrry/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://github.com/houtrry/2017/08/25/dagger2的使用小结/&title=《dagger2的使用小结》 — 白日梦想家&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/houtrry/2017/08/25/dagger2的使用小结/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《dagger2的使用小结》 — 白日梦想家&url=https://github.com/houtrry/2017/08/25/dagger2的使用小结/&via=https://github.com/houtrry" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://github.com/houtrry/2017/08/25/dagger2的使用小结/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/08/25/IntentService源码分析/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">IntentService源码分析</h4>
+      </a>
+    </div>
+  
+
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>houtrry &copy; 2015 - 2017</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://github.com/houtrry/2017/08/25/dagger2的使用小结/&title=《dagger2的使用小结》 — 白日梦想家&pic=https://github.com/houtrry/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://github.com/houtrry/2017/08/25/dagger2的使用小结/&title=《dagger2的使用小结》 — 白日梦想家&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/houtrry/2017/08/25/dagger2的使用小结/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《dagger2的使用小结》 — 白日梦想家&url=https://github.com/houtrry/2017/08/25/dagger2的使用小结/&via=https://github.com/houtrry" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://github.com/houtrry/2017/08/25/dagger2的使用小结/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACM0lEQVR42u3aQY7jMAwEwPn/p7PXALPxdovKApbLp0EmiFg+ECTFn5/4eb09vz95//zTf39/5/2bn07Z/GBgYNyW8bp8kqDbX56c+zEGDAyMBzCSVJh///qbLSM5CwMDAyNJsnkQ10UhBgYGxi7Gq3xyKgYGBsakiU2S4zX4+tzkrA29OAYGxg0Z+eDs///9lfsNDAyMWzHm5V2bKPMhXREVBgbG0YzJKG2t7ayDy+PBwMA4lNG2l+3IrB2cXZ9Yv2MMDIyjGW0zmSTZ9qoyLz0xMDDOZuQrEW1Aey8DNlS4GBgYt2W015aTAm7X9UAxNcTAwDiCkRdh7WBurbtM0vfHGDAwMB7GaJvVvFicDNr+keIxMDAew1hrLydXkknTW4zbMDAwjmPkZV+7ZtGm16QljhbCMDAwDmUkCTdPwXnaXSsio5yNgYFxECPfs5qsZUwuQdcGeRgYGCcxkvJr0pq2pV57CVH/NAYGxg0Za81qXmKu1W+TSDAwMJ7A2LX68L2Fs/Y1YWBgnMFoB2RrheAaNX8FGBgYT2Pkw7KkxJxclBavFQMD42GMfD0rT7vtskXbZmNgYJzKWLsGyFNzXd59o7bFwMC4OWNtut5ePbbHTwZzGBgYpzImwbXjubXEveFNY2BgHMHIE1+eKJNrzkkT+5eEi4GBgREMy9aSdb7qsS3hYmBgHM2YBHcd4togDwMD4zmMyZJWm45b2OZxGwYGxg0Zo02NwRBt3rhiYGA8gPEHrRaJh/RJC1MAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '迷路了吗?';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

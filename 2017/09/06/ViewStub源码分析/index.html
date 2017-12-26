@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>ViewStub源码分析 | 白日梦想家 | 未觉池塘春草梦, 阶前梧叶已秋声.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#00BCD4">
+    
+    
+    <meta name="keywords" content="源码分析,ViewStub">
+    <meta name="description" content="写在前面本次分析的源码的SDK的版本为25.3.1.   ViewStub的简单使用可以查看官方文档的相关说明.   在xml中使用ViewStub12345678910111213141516171819202122232425&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;utf-8&amp;quot;?&amp;gt;&amp;lt;LinearLayout    x">
+<meta name="keywords" content="源码分析,ViewStub">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ViewStub源码分析">
+<meta property="og:url" content="https://github.com/houtrry/2017/09/06/ViewStub源码分析/index.html">
+<meta property="og:site_name" content="白日梦想家">
+<meta property="og:description" content="写在前面本次分析的源码的SDK的版本为25.3.1.   ViewStub的简单使用可以查看官方文档的相关说明.   在xml中使用ViewStub12345678910111213141516171819202122232425&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;utf-8&amp;quot;?&amp;gt;&amp;lt;LinearLayout    x">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-12-26T03:30:25.371Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ViewStub源码分析">
+<meta name="twitter:description" content="写在前面本次分析的源码的SDK的版本为25.3.1.   ViewStub的简单使用可以查看官方文档的相关说明.   在xml中使用ViewStub12345678910111213141516171819202122232425&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;utf-8&amp;quot;?&amp;gt;&amp;lt;LinearLayout    x">
+    
+        <link rel="alternate" type="application/atom+xml" title="白日梦想家" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/avatar.jpg">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">houtrry</h5>
+          <a href="mailto:houtrry@hotmail.com" title="houtrry@hotmail.com" class="mail">houtrry@hotmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/houtrry" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">ViewStub源码分析</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">ViewStub源码分析</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-09-06T07:55:32.000Z" itemprop="datePublished" class="page-time">
+  2017-09-06
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Android/">Android</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#写在前面"><span class="post-toc-number">1.</span> <span class="post-toc-text">写在前面</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ViewStub的简单使用"><span class="post-toc-number">2.</span> <span class="post-toc-text">ViewStub的简单使用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#在xml中使用ViewStub"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">在xml中使用ViewStub</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#在Activity中控制ViewStub"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">在Activity中控制ViewStub</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#源码分析"><span class="post-toc-number">3.</span> <span class="post-toc-text">源码分析</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#源码内容"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">源码内容</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#构造方法"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">构造方法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#ViewStub-inflate"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">ViewStub#inflate</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#ViewStub-setVisibility"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">ViewStub#setVisibility</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#ViewStub-setLayoutResource和ViewStub-setInflatedId"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">ViewStub#setLayoutResource和ViewStub#setInflatedId</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总结"><span class="post-toc-number">4.</span> <span class="post-toc-text">总结</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-ViewStub源码分析"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">ViewStub源码分析</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-09-06 15:55:32" datetime="2017-09-06T07:55:32.000Z"  itemprop="datePublished">2017-09-06</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Android/">Android</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本次分析的源码的SDK的版本为25.3.1.  </p>
+<h2 id="ViewStub的简单使用"><a href="#ViewStub的简单使用" class="headerlink" title="ViewStub的简单使用"></a>ViewStub的简单使用</h2><p>可以查看<a href="https://developer.android.com/reference/android/view/ViewStub.html" target="_blank" rel="noopener">官方文档</a>的相关说明.  </p>
+<h3 id="在xml中使用ViewStub"><a href="#在xml中使用ViewStub" class="headerlink" title="在xml中使用ViewStub"></a>在xml中使用ViewStub</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;LinearLayout</span><br><span class="line">    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">    xmlns:tools=&quot;http://schemas.android.com/tools&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot;</span><br><span class="line">    android:orientation=&quot;vertical&quot;</span><br><span class="line">    tools:context=&quot;com.houtrry.viewstubdemo.MainActivity&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;Button</span><br><span class="line">        android:id=&quot;@+id/button&quot;</span><br><span class="line">        android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">        android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">        android:text=&quot;button&quot;</span><br><span class="line">        android:textAllCaps=&quot;false&quot;</span><br><span class="line">        android:textSize=&quot;18sp&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;ViewStub</span><br><span class="line">        android:id=&quot;@+id/viewStub&quot;</span><br><span class="line">        android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">        android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">        android:inflatedId=&quot;@+id/ll_root&quot;</span><br><span class="line">        android:layout=&quot;@layout/layout_stub&quot;/&gt;</span><br><span class="line"></span><br><span class="line">&lt;/LinearLayout&gt;</span><br></pre></td></tr></table></figure>
+<p>其中, android:layout=”@layout/layout_stub”是关联布局layout_stub, 即是使用@layout/layout_stub来填充布局.android:inflatedId=”@+id/ll_root”的作用稍后说明. </p>
+<p>layout/layout_stub如下  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">              android:layout_width=&quot;match_parent&quot;</span><br><span class="line">              android:layout_height=&quot;match_parent&quot;</span><br><span class="line">              android:gravity=&quot;center&quot;</span><br><span class="line">              android:orientation=&quot;vertical&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;ImageView</span><br><span class="line">        android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">        android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">        android:background=&quot;@mipmap/ic_launcher_round&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;TextView</span><br><span class="line">        android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">        android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">        android:text=&quot;hello world!&quot;</span><br><span class="line">        android:textAllCaps=&quot;false&quot;</span><br><span class="line">        android:textColor=&quot;@color/colorAccent&quot;</span><br><span class="line">        android:textSize=&quot;15sp&quot;/&gt;</span><br><span class="line">    </span><br><span class="line">&lt;/LinearLayout&gt; </span><br></pre></td></tr></table></figure>  
+<h3 id="在Activity中控制ViewStub"><a href="#在Activity中控制ViewStub" class="headerlink" title="在Activity中控制ViewStub"></a>在Activity中控制ViewStub</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">private ViewStub mViewStub;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">    super.onCreate(savedInstanceState);</span><br><span class="line">    setContentView(R.layout.activity_main);</span><br><span class="line"></span><br><span class="line">    mViewStub = (ViewStub) findViewById(R.id.viewStub);</span><br><span class="line"></span><br><span class="line">    LinearLayout ll_root = (LinearLayout) findViewById(R.id.ll_root);</span><br><span class="line">    Log.d(TAG, &quot;onCreate: ll_root: &quot;+ll_root);</span><br><span class="line"></span><br><span class="line">    findViewById(R.id.button).setOnClickListener(new View.OnClickListener() &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void onClick(View view) &#123;</span><br><span class="line">            mViewStub.inflate();</span><br><span class="line"></span><br><span class="line">            LinearLayout ll_root = (LinearLayout) findViewById(R.id.ll_root);</span><br><span class="line">            Log.d(TAG, &quot;onCreate: ll_root: &quot;+ll_root);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 
+<p>ViewStub#inflate调用前, ViewStub没有任何显示.ViewStub#inflate调用后, 显示出layout/layout_stub的内容.<br>关于android:inflatedId=”@+id/ll_root”, ll_root就是layout_stub的id, 可以使用inflatedId的值来获取android:layout=”@layout/layout_stub”布局的根控件.<br>点击按钮后, 日志如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">D/MainActivity: onCreate: ll_root: null</span><br><span class="line">D/MainActivity: onCreate: ll_root: android.widget.LinearLayout&#123;180892 V.E..... ......I. 0,0-0,0 #7f0b0060 app:id/ll_root&#125;</span><br></pre></td></tr></table></figure></p>
+<p>说明调用ViewStub#inflate前, 布局layout/layout_stub并没有填充, 也没法获取layout/layout_stub中的控件.ViewStub#inflate后才可以.<br>再次点击按钮, 程序崩溃, 崩溃信息如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">E/AndroidRuntime: FATAL EXCEPTION: main</span><br><span class="line">                  Process: com.houtrry.viewstubdemo, PID: 4841</span><br><span class="line">                  java.lang.IllegalStateException: ViewStub must have a non-null ViewGroup viewParent</span><br><span class="line">                      at android.view.ViewStub.inflate(ViewStub.java:292)</span><br><span class="line">                      at com.houtrry.viewstubdemo.MainActivity$1.onClick(MainActivity.java:28)</span><br><span class="line">                      at android.view.View.performClick(View.java:4785)</span><br><span class="line">                      at android.view.View$PerformClick.run(View.java:19884)</span><br><span class="line">                      at android.os.Handler.handleCallback(Handler.java:739)</span><br><span class="line">                      at android.os.Handler.dispatchMessage(Handler.java:95)</span><br><span class="line">                      at android.os.Looper.loop(Looper.java:135)</span><br><span class="line">                      at android.app.ActivityThread.main(ActivityThread.java:5343)</span><br><span class="line">                      at java.lang.reflect.Method.invoke(Native Method)</span><br><span class="line">                      at java.lang.reflect.Method.invoke(Method.java:372)</span><br><span class="line">                      at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:905)</span><br><span class="line">                      at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:700)</span><br></pre></td></tr></table></figure><br>提示ViewStub没有父控件. 说明ViewStub#inflate后, 不能再次调用ViewStub#inflate方法. 至于原因, 后面说明.</p>
+<hr>
+<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><h3 id="源码内容"><a href="#源码内容" class="headerlink" title="源码内容"></a>源码内容</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br></pre></td><td class="code"><pre><span class="line">@RemoteView</span><br><span class="line">public final class ViewStub extends View &#123;</span><br><span class="line">    private int mInflatedId;</span><br><span class="line">    private int mLayoutResource;</span><br><span class="line"></span><br><span class="line">    private WeakReference&lt;View&gt; mInflatedViewRef;</span><br><span class="line"></span><br><span class="line">    private LayoutInflater mInflater;</span><br><span class="line">    private OnInflateListener mInflateListener;</span><br><span class="line"></span><br><span class="line">    public ViewStub(Context context) &#123;</span><br><span class="line">        this(context, 0);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public ViewStub(Context context, @LayoutRes int layoutResource) &#123;</span><br><span class="line">        this(context, null);</span><br><span class="line"></span><br><span class="line">        mLayoutResource = layoutResource;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public ViewStub(Context context, AttributeSet attrs) &#123;</span><br><span class="line">        this(context, attrs, 0);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public ViewStub(Context context, AttributeSet attrs, int defStyleAttr) &#123;</span><br><span class="line">        this(context, attrs, defStyleAttr, 0);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public ViewStub(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) &#123;</span><br><span class="line">        super(context);</span><br><span class="line"></span><br><span class="line">        final TypedArray a = context.obtainStyledAttributes(attrs,</span><br><span class="line">                R.styleable.ViewStub, defStyleAttr, defStyleRes);</span><br><span class="line">        mInflatedId = a.getResourceId(R.styleable.ViewStub_inflatedId, NO_ID);</span><br><span class="line">        mLayoutResource = a.getResourceId(R.styleable.ViewStub_layout, 0);</span><br><span class="line">        mID = a.getResourceId(R.styleable.ViewStub_id, NO_ID);</span><br><span class="line">        a.recycle();</span><br><span class="line"></span><br><span class="line">        setVisibility(GONE);</span><br><span class="line">        setWillNotDraw(true);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @IdRes</span><br><span class="line">    public int getInflatedId() &#123;</span><br><span class="line">        return mInflatedId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @android.view.RemotableViewMethod</span><br><span class="line">    public void setInflatedId(@IdRes int inflatedId) &#123;</span><br><span class="line">        mInflatedId = inflatedId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @LayoutRes</span><br><span class="line">    public int getLayoutResource() &#123;</span><br><span class="line">        return mLayoutResource;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @android.view.RemotableViewMethod</span><br><span class="line">    public void setLayoutResource(@LayoutRes int layoutResource) &#123;</span><br><span class="line">        mLayoutResource = layoutResource;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setLayoutInflater(LayoutInflater inflater) &#123;</span><br><span class="line">        mInflater = inflater;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public LayoutInflater getLayoutInflater() &#123;</span><br><span class="line">        return mInflater;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) &#123;</span><br><span class="line">        setMeasuredDimension(0, 0);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void draw(Canvas canvas) &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void dispatchDraw(Canvas canvas) &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    @android.view.RemotableViewMethod</span><br><span class="line">    public void setVisibility(int visibility) &#123;</span><br><span class="line">        if (mInflatedViewRef != null) &#123;</span><br><span class="line">            View view = mInflatedViewRef.get();</span><br><span class="line">            if (view != null) &#123;</span><br><span class="line">                view.setVisibility(visibility);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                throw new IllegalStateException(&quot;setVisibility called on un-referenced view&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            super.setVisibility(visibility);</span><br><span class="line">            if (visibility == VISIBLE || visibility == INVISIBLE) &#123;</span><br><span class="line">                inflate();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public View inflate() &#123;</span><br><span class="line">        final ViewParent viewParent = getParent();</span><br><span class="line"></span><br><span class="line">        if (viewParent != null &amp;&amp; viewParent instanceof ViewGroup) &#123;</span><br><span class="line">            if (mLayoutResource != 0) &#123;</span><br><span class="line">                final ViewGroup parent = (ViewGroup) viewParent;</span><br><span class="line">                final LayoutInflater factory;</span><br><span class="line">                if (mInflater != null) &#123;</span><br><span class="line">                    factory = mInflater;</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    factory = LayoutInflater.from(mContext);</span><br><span class="line">                &#125;</span><br><span class="line">                final View view = factory.inflate(mLayoutResource, parent,</span><br><span class="line">                        false);</span><br><span class="line"></span><br><span class="line">                if (mInflatedId != NO_ID) &#123;</span><br><span class="line">                    view.setId(mInflatedId);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                final int index = parent.indexOfChild(this);</span><br><span class="line">                parent.removeViewInLayout(this);</span><br><span class="line"></span><br><span class="line">                final ViewGroup.LayoutParams layoutParams = getLayoutParams();</span><br><span class="line">                if (layoutParams != null) &#123;</span><br><span class="line">                    parent.addView(view, index, layoutParams);</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    parent.addView(view, index);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                mInflatedViewRef = new WeakReference&lt;View&gt;(view);</span><br><span class="line"></span><br><span class="line">                if (mInflateListener != null) &#123;</span><br><span class="line">                    mInflateListener.onInflate(this, view);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                return view;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                throw new IllegalArgumentException(&quot;ViewStub must have a valid layoutResource&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            throw new IllegalStateException(&quot;ViewStub must have a non-null ViewGroup viewParent&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setOnInflateListener(OnInflateListener inflateListener) &#123;</span><br><span class="line">        mInflateListener = inflateListener;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static interface OnInflateListener &#123;</span><br><span class="line">        void onInflate(ViewStub stub, View inflated);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>  
+<h3 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h3><p>构造方法中, 我们获取了属性android:inflatedId 和android:layout的值, 并将ViewStub设置为隐藏.</p>
+<h3 id="ViewStub-inflate"><a href="#ViewStub-inflate" class="headerlink" title="ViewStub#inflate"></a>ViewStub#inflate</h3><p>首先, 获取ViewStub的parent, 如果parent为空或者parent不是ViewGroup, 则抛出异常”ViewStub must have a non-null ViewGroup viewParent”, 我们先把问题放在这里, 继续向下看.<br>mLayoutResource就是android:layout的值, 如果没有设置android:layout, 则抛出异常”ViewStub must have a valid layoutResource”.<br>接下来就是ViewStub的核心了.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">//找到ViewStub的父控件</span><br><span class="line">final ViewGroup parent = (ViewGroup) viewParent;</span><br><span class="line">final LayoutInflater factory;</span><br><span class="line">if (mInflater != null) &#123;</span><br><span class="line">    factory = mInflater;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    factory = LayoutInflater.from(mContext);</span><br><span class="line">&#125;</span><br><span class="line">//通过LayoutInflater获取android:layout的View</span><br><span class="line">final View view = factory.inflate(mLayoutResource, parent,</span><br><span class="line">        false);</span><br><span class="line">//如果有设置android:inflatedId, 将android:inflatedId的值设置给填充的View, 这也是为什么我们能通过</span><br><span class="line">//LinearLayout ll_root = (LinearLayout) findViewById(R.id.ll_root)获取layout/layout_stub的根控件</span><br><span class="line">//LinearLayout的原因</span><br><span class="line">if (mInflatedId != NO_ID) &#123;</span><br><span class="line">    view.setId(mInflatedId);</span><br><span class="line">&#125;</span><br><span class="line">//获取ViewStub在父控件中的位置</span><br><span class="line">final int index = parent.indexOfChild(this);</span><br><span class="line">//将ViewStub从父控件中移除!!!.</span><br><span class="line">//这里就是ViewStub#inflate调用第二次的时候出现&quot;ViewStub must have a non-null ViewGroup viewParent&quot;  </span><br><span class="line">//异常的原因. 因为ViewStub#inflate执行后, ViewStub就被移除了, parent就是null.</span><br><span class="line">parent.removeViewInLayout(this);</span><br><span class="line">//在父控件的相同位置添加填充的View</span><br><span class="line">final ViewGroup.LayoutParams layoutParams = getLayoutParams();</span><br><span class="line">if (layoutParams != null) &#123;</span><br><span class="line">    parent.addView(view, index, layoutParams);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    parent.addView(view, index);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>再往后, 就是用弱引用保存填充的View了, 以及执行InflateListener的监听回调.  </p>
+<h3 id="ViewStub-setVisibility"><a href="#ViewStub-setVisibility" class="headerlink" title="ViewStub#setVisibility"></a>ViewStub#setVisibility</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">@android.view.RemotableViewMethod</span><br><span class="line">public void setVisibility(int visibility) &#123;</span><br><span class="line">    if (mInflatedViewRef != null) &#123;</span><br><span class="line">        View view = mInflatedViewRef.get();</span><br><span class="line">        if (view != null) &#123;</span><br><span class="line">            view.setVisibility(visibility);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            throw new IllegalStateException(&quot;setVisibility called on un-referenced view&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        super.setVisibility(visibility);</span><br><span class="line">        if (visibility == VISIBLE || visibility == INVISIBLE) &#123;</span><br><span class="line">            inflate();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>  
+<p>这就很简单了, 从弱引用中取出View, 调用View的setVisibility方法.  </p>
+<h3 id="ViewStub-setLayoutResource和ViewStub-setInflatedId"><a href="#ViewStub-setLayoutResource和ViewStub-setInflatedId" class="headerlink" title="ViewStub#setLayoutResource和ViewStub#setInflatedId"></a>ViewStub#setLayoutResource和ViewStub#setInflatedId</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@android</span>.view.RemotableViewMethod</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setInflatedId</span><span class="params">(@IdRes <span class="keyword">int</span> inflatedId)</span> </span>&#123;</span><br><span class="line">    mInflatedId = inflatedId;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@android</span>.view.RemotableViewMethod</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setLayoutResource</span><span class="params">(@LayoutRes <span class="keyword">int</span> layoutResource)</span> </span>&#123;</span><br><span class="line">    mLayoutResource = layoutResource;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>  
+<p>这个很简单了, 在调用ViewStub#inflate前, 我们可以在代码中设置android:inflatedId 和android:layout的值.<br>应该注意的是, ViewStub#inflate只能调用一次, 在ViewStub#inflate后调用ViewStub#setLayoutResource和ViewStub#setInflatedId将不会有任何效果.</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>ViewStub的原理是初始化的时候隐藏. ViewStub#inflate后, 将自己从父控件中移除, 并将填充View添加到ViewStub所在的位置进行显示.  </li>
+<li>ViewStub#inflate只能调用一次. 调用一次后再调用的话, 会抛出异常”ViewStub must have a non-null ViewGroup viewParent”.  </li>
+<li>ViewStub#inflate后, 使用ViewStub#setVisibility控制控件的显示与隐藏(实际调用的是填充View的显示与隐藏)</li>
+</ol>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-12-26T03:30:25.371Z" itemprop="dateUpdated">2017-12-26 11:30:25</time>
+</span><br>
+
+
+        
+    </div>
+    <footer>
+        <a href="https://github.com/houtrry">
+            <img src="/img/avatar.jpg" alt="houtrry">
+            houtrry
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ViewStub/">ViewStub</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/源码分析/">源码分析</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://github.com/houtrry/2017/09/06/ViewStub源码分析/&title=《ViewStub源码分析》 — 白日梦想家&pic=https://github.com/houtrry/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://github.com/houtrry/2017/09/06/ViewStub源码分析/&title=《ViewStub源码分析》 — 白日梦想家&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/houtrry/2017/09/06/ViewStub源码分析/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《ViewStub源码分析》 — 白日梦想家&url=https://github.com/houtrry/2017/09/06/ViewStub源码分析/&via=https://github.com/houtrry" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://github.com/houtrry/2017/09/06/ViewStub源码分析/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/12/26/关于Java动态代理Proxy的一点思考/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">[no title]</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/08/31/SnackBar源码分析/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">SnackBar源码分析</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>houtrry &copy; 2015 - 2017</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://github.com/houtrry/2017/09/06/ViewStub源码分析/&title=《ViewStub源码分析》 — 白日梦想家&pic=https://github.com/houtrry/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://github.com/houtrry/2017/09/06/ViewStub源码分析/&title=《ViewStub源码分析》 — 白日梦想家&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/houtrry/2017/09/06/ViewStub源码分析/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《ViewStub源码分析》 — 白日梦想家&url=https://github.com/houtrry/2017/09/06/ViewStub源码分析/&via=https://github.com/houtrry" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://github.com/houtrry/2017/09/06/ViewStub源码分析/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLUlEQVR42u3aS27CQBAFQO5/aSJlG+y81xMiMVNeIYjsKSI1/Xs84uv5fV29c/86uX7+/eMdFwYGxscy2gdcHTq559Vx8+deUjEwMA5g3AfZ/AFJsJ6F8l/uiYGBgVEmgvmXgoGBgfE+xvqnecqIgYGBkRexeUCclcdtww4DA+McRjsY+M/Xb5xvYGBgfAjjWV4r6WM+pKxPhYGBsTVjNp5sC8522JlH1+hGGBgYmzL+dlVipVQuAjcGBsamjLZcvB83zirNdsx5meFiYGBszWiXuu7TweTB+a/BsBbHwMDYmpGUmm1AXCmMo7EBBgbGMYzZgleb2K0MR6OAi4GBcSRjVo7+1TAgCt8YGBjHM2YlaJ5KtssZS78bGBgYH8soysVywSsfIbQJ4ouAi4GBsSljmIqVh2vXOFYCNAYGxn6MJL1reW3D7v6diIeBgbE1ow1tbehM7pwni/VvBQYGxhaMWUMt/4byYNomo5ddQwwMjO0Y+fpX2/pv1zXyQULdbsPAwPhwRt7cb4/YrqWuBGsMDIxzGOtlaoJpR6ERHgMDY2tGvmaxgmzDa760cfmfwcDA2IgxC7X5UWbjgXrVAwMDY2tGfuUts7Z5t3JPDAyMcxgrqV4+yJwNCZKmGwYGxjmMNsjOGmTtukbRnsPAwMAIlrpmjbmVyPkiNcTAwMCIQ+1s5SsfIWBgYJzJWClik7K2LU3b+2BgYOzNmA0G8lb++jpF0XTDwMDYjfEFPEHXjYBEXrwAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '迷路了吗?';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
